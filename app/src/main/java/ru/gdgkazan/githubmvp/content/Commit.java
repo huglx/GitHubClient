@@ -11,13 +11,31 @@ import io.realm.RealmObject;
  */
 public class Commit extends RealmObject {
 
+    @SerializedName("commit")
+    private CommitWhole mCommit;
+
     private String mRepoName;
 
     @SerializedName("author")
     private Author mAuthor;
 
-    @SerializedName("message")
-    private String mMessage;
+    public Commit() {
+    }
+
+    public Commit(CommitWhole mCommit, String mRepoName, Author mAuthor) {
+        this.mCommit = mCommit;
+        this.mRepoName = mRepoName;
+        this.mAuthor = mAuthor;
+    }
+
+    @NonNull
+    public CommitWhole getCommit() {
+        return mCommit;
+    }
+
+    public void setCommit(@NonNull CommitWhole message) {
+        mCommit = message;
+    }
 
     @NonNull
     public String getRepoName() {
@@ -37,12 +55,4 @@ public class Commit extends RealmObject {
         mAuthor = author;
     }
 
-    @NonNull
-    public String getMessage() {
-        return mMessage;
-    }
-
-    public void setMessage(@NonNull String message) {
-        mMessage = message;
-    }
 }

@@ -2,11 +2,14 @@ package ru.gdgkazan.githubmvp.screen.repositories;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ import ru.gdgkazan.githubmvp.widget.EmptyRecyclerView;
  * @author Artur Vasilov
  */
 public class RepositoriesActivity extends AppCompatActivity implements RepositoriesView,
-        BaseAdapter.OnItemClickListener<Repository> {
+        BaseAdapter.OnItemClickListener<Repository>, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -48,6 +51,10 @@ public class RepositoriesActivity extends AppCompatActivity implements Repositor
 
     private RepositoriesPresenter mPresenter;
 
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RepositoriesActivity.class);
         activity.startActivity(intent);
@@ -61,6 +68,12 @@ public class RepositoriesActivity extends AppCompatActivity implements Repositor
         setSupportActionBar(mToolbar);
 
         mLoadingView = LoadingDialog.view(getSupportFragmentManager());
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mSwipeRefreshLayout.setColorSchemeColors(
+                Color.BLACK, Color.GREEN, Color.BLUE, Color.CYAN);
+
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
@@ -82,7 +95,9 @@ public class RepositoriesActivity extends AppCompatActivity implements Repositor
 
     @Override
     public void showRepositories(@NonNull List<Repository> repositories) {
+        Log.i("showRepositories", ""+repositories.size());
         mAdapter.changeDataSet(repositories);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -103,5 +118,10 @@ public class RepositoriesActivity extends AppCompatActivity implements Repositor
     @Override
     public void showError() {
         mAdapter.clear();
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.refresh();
     }
 }

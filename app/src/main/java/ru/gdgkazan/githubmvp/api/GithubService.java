@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import ru.gdgkazan.githubmvp.content.Commit;
 import ru.gdgkazan.githubmvp.content.CommitResponse;
 import ru.gdgkazan.githubmvp.content.Repository;
 import ru.gdgkazan.githubmvp.content.Authorization;
@@ -27,6 +28,6 @@ public interface GithubService {
     Observable<List<Repository>> repositories();
 
     @GET("/repos/{user}/{repo}/commits")
-    Observable<List<CommitResponse>> commits(@Path("user") String user, @Path("repo") String repo);
+    Observable<List<Commit>> commits(@Path("user") String user, @Path("repo") String repo);
 
 }
