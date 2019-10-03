@@ -57,6 +57,7 @@ public class RepositoriesActivity extends AppCompatActivity implements Repositor
 
     public static void start(@NonNull Activity activity) {
         Intent intent = new Intent(activity, RepositoriesActivity.class);
+
         activity.startActivity(intent);
     }
 
@@ -90,6 +91,8 @@ public class RepositoriesActivity extends AppCompatActivity implements Repositor
 
     @Override
     public void onItemClick(@NonNull Repository item) {
+      //  Log.i("showRepositories2", item.getLanguage());
+
         mPresenter.onItemClick(item);
     }
 

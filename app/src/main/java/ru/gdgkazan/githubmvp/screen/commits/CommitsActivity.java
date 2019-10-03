@@ -23,6 +23,8 @@ import ru.arturvasilov.rxloader.LoaderLifecycleHandler;
 import ru.gdgkazan.githubmvp.R;
 import ru.gdgkazan.githubmvp.content.Commit;
 import ru.gdgkazan.githubmvp.content.Repository;
+import ru.gdgkazan.githubmvp.screen.general.LoadingDialog;
+import ru.gdgkazan.githubmvp.screen.general.LoadingView;
 import ru.gdgkazan.githubmvp.screen.repositories.RepositoriesAdapter;
 import ru.gdgkazan.githubmvp.screen.repositories.RepositoriesPresenter;
 import ru.gdgkazan.githubmvp.widget.DividerItemDecoration;
@@ -47,6 +49,7 @@ public class CommitsActivity extends AppCompatActivity implements CommitsView, S
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private LoadingView mLoadingView;
 
     private CommitsPresenter mPresenter;
 
@@ -57,6 +60,7 @@ public class CommitsActivity extends AppCompatActivity implements CommitsView, S
     public static void start(@NonNull Activity activity, @NonNull Repository repository) {
         Intent intent = new Intent(activity, CommitsActivity.class);
         intent.putExtra(REPO_NAME_KEY, repository.getName());
+       // intent.putExtra(REPO_NAME_KEY, user);
 
         activity.startActivity(intent);
     }
@@ -68,8 +72,9 @@ public class CommitsActivity extends AppCompatActivity implements CommitsView, S
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
 
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mLoadingView = LoadingDialog.view(getSupportFragmentManager());
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeColors(
                 Color.BLACK, Color.GREEN, Color.BLUE, Color.CYAN);
 
@@ -117,11 +122,12 @@ public class CommitsActivity extends AppCompatActivity implements CommitsView, S
 
     @Override
     public void showLoading() {
-
+        mLoadingView.showLoading();
     }
 
     @Override
     public void hideLoading() {
+        mLoadingView.hideLoading();
 
     }
 
