@@ -88,15 +88,6 @@ public class CommitsActivity extends AppCompatActivity implements CommitsView, S
 
         repositoryName = getIntent().getStringExtra(REPO_NAME_KEY);
         //Snackbar.make(mRecyclerView, "Not implemented for " + repositoryName + " yet", Snackbar.LENGTH_LONG).show();
-
-        /**
-         * TODO : task
-         *
-         * Load commits info and display them
-         * Use MVP pattern for managing logic and UI and Repository for requests and caching
-         *
-         * API docs can be found here https://developer.github.com/v3/repos/commits/
-         */
         LifecycleHandler lifecycleHandler = LoaderLifecycleHandler.create(this, getSupportLoaderManager());
         mPresenter = new CommitsPresenter(lifecycleHandler, this);
         mPresenter.init(repositoryName);
@@ -106,10 +97,7 @@ public class CommitsActivity extends AppCompatActivity implements CommitsView, S
     @Override
     public void showCommits(@NonNull List<Commit> commits) {
         Log.i("showCommits", commits.size()+"");
-        Log.i("showCommits", commits.get(0).getCommit().getmCommitMessage());
-        /*for (int i = 0; i<=commits.size();i++){
-            Log.i("showCommits", commits.get(i).getCommit().getmCommitMessage());
-        }*/
+
         mAdapter.changeDataSet(commits);
         mSwipeRefreshLayout.setRefreshing(false);
 
